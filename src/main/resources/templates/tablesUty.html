@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>O'zvagonta'mir</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<style>
+		.link .icon {
+			display: inline-block;
+			text-align: center;
+			font-style: normal;
+			transition: all .5s ease-in-out;
+			cursor: pointer;
+			use-select: none;
+		}
+		.link .icon:hover {
+			transform: rotateZ(360deg) scale(1.2);
+		}
+	</style>
+</head>
+
+<body >
+	<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/" style="margin-left:20px;">Asosiy</a>
+				<button
+						class="navbar-toggler"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent"
+						aria-expanded="false"
+						aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="dropdown-item" href="/vagons">Qoldiq vagonlar</a>
+						</li>
+						<li class="nav-item">
+							<a class="dropdown-item" href="/vagons/chiqishMalumot">187 telegramma bo'yicha ma'lumot</a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" style="text-decoration: none; color: black" data-toggle="dropdown">Ta'mir bo'yicha ma'lumot <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<a class="dropdown-item"  href="/vagons/tablesUty">O'TY rejasi bo'yicha</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item"  href="/vagons/tables">Bisnes reja bo'yicha</a>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" style="text-decoration: none; color: black; margin-left: 20px" data-toggle="dropdown">Metrologiya <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<a class="dropdown-item"  href="/metrologiya">Sexdagi shablonlar</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item "  href="/metrologiyaSklad">Skladdagi shablonlar</a>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class=" justify-content-center  row">
+			<div class="col-6 link">
+				<a th:href="@{/vagons/AllPlanTableUty}" class="icon btn btn-lg btn-outline-primary col-7 mt-3" ><p th:text="${month}" class="lead">Oylik</p></a>
+			</div>
+			<div class="col-6 link">
+				<a th:href="@{/vagons/planTableForMonthsUty}" class="icon btn btn-lg btn-outline-primary col-7 mt-4" ><p th:text="${year}" class="lead"></p></a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

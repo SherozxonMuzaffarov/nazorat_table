@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>O'zvagonta'mir</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<style>
+		.table td,th {
+			text-align: center;
+			vertical-align: middle;
+		}
+	</style>
+</head>
+
+<body >
+	<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/" style="margin-left:20px;">Asosiy</a>
+				<button
+						class="navbar-toggler"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent"
+						aria-expanded="false"
+						aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="dropdown-item" href="/vagons">Qoldiq vagonlar</a>
+						</li>
+						<li class="nav-item">
+							<a class="dropdown-item" href="/vagons/chiqishMalumot">187 telegramma bo'yicha ma'lumot</a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" style="text-decoration: none; color: black" data-toggle="dropdown">Ta'mir bo'yicha ma'lumot <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<a class="dropdown-item"  href="/vagons/tablesUty">O'TY rejasi bo'yicha</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item"  href="/vagons/tables">Bisnes reja bo'yicha</a>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" style="text-decoration: none; color: black; margin-left: 20px" data-toggle="dropdown">Metrologiya <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<a class="dropdown-item"  href="/metrologiya">Sexdagi shablonlar</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item "  href="/metrologiyaSklad">Skladdagi shablonlar</a>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div class=" justify-content-end row">
+			<ul class="nav">
+				<li class="nav-item">
+					<a th:href="@{/vagons/newPlan}" class="nav-link" ><p class="lead">Ta'mir rejasini kiritish</p></a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/vagons/newTayyor}" class="nav-link" ><p class="lead">Vagon qo'shish</p></a>
+				</li>
+			</ul>
+			<form th:action="@{/vagons/searchTayyor}" method="get">
+				<div class="form-group">
+					<input name="nomer" type="Integer" th:name="participant"  th:field="*{participant}" class="form-control"
+						placeholder="Qidirish..." />
+					<button class="btn btn-primary btn-block" type="submit">Qidirish</button>
+				</div>
+			</form>
+			<form th:action="@{/vagons/filterOneMonth}" method="get">
+				<div class="form-group col">
+				  <select class="form-control" th:name="depoNomi"  >
+					<option th:value="'Hammasi'">O'zvagonta'mir</option>
+					<option th:value="'VCHD-3'">VCHD-3</option>
+					<option th:value="'VCHD-5'">VCHD-5</option>
+					<option th:value="'VCHD-6'">VCHD-6</option>
+				  </select>
+				 </div>
+				 <div class="form-group">
+				  <select class="form-control" th:name="vagonTuri"  >
+				  	<option th:value="'Hammasi'">Jami</option>
+				    <option th:value="'Yopiq vagon (крыт)'">Yopiq vagon (крыт)</option>
+				    <option th:value="'Platforma(пф)'">Platforma(пф)</option>
+				    <option th:value="'Yarim ochiq vagon(пв)'">Yarim ochiq vagon(пв)</option>
+				    <option th:value="'Sisterna(цс)'">Sisterna(цс)</option>
+				    <option th:value="'Boshqa turdagi(проч)'">Boshqa turdagi(проч)</option>
+					<option th:value="'Yo\'lovchi vagon(пассжир)'">Yo'lovchi vagon(пассжир)</option>
+				  </select>
+				 </div>
+				 <div class="form-group col">
+				  <select class="form-control" th:name="country"  >
+				  	<option th:value="'Hammasi'">Jami</option>
+				  	<option th:value="'O\'TY(ГАЖК)'">O'TY(ГАЖК)</option>
+				    <option th:value="'MDH(СНГ)'">MDH(СНГ)</option>
+				    <option th:value="'Sanoat(ПРОМ)'">Sanoat(ПРОМ)</option>
+				  </select>
+				 </div>
+				 <button class="btn btn-primary btn-block" type="submit">Filter</button>
+			 </form>
+			
+		</div>
+		<hr>
+		
+		<div class="container bg-yellow d-flex justify-content-center text-black">
+			<h3>Depo ta'mir(ДР)</h3>
+		</div>
+		<table class=" table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th rowspan="2">VCHD</th>
+					<th colspan="3">Jami</th>
+					<th colspan="3">Yopiq vagon (крыт)</th>
+					<th colspan="3">Platforma(пф)</th>
+					<th colspan="3">Yarim ochiq vagon(пв)</th>
+					<th colspan="3">Sisterna(цс)</th>
+					<th colspan="3">Boshqa turdagi(проч)</th>
+				</tr>
+				<tr>	
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>	
+				</tr>
+			</thead>
+			<hr>
+			<tbody>
+				
+				<tr>	
+					<th >VCHD-3</th>	
+				
+					<td th:text="${HavDtHammaPlan}"></td>				
+					<td th:text="${hdHamma}"></td>
+					<td th:text="${hdHamma - HavDtHammaPlan}"></td>
+					
+					<td th:text="${HavDtKritiPlan}"></td>				
+					<td th:text="${hdKriti}"></td>
+					<td th:text="${hdKriti - HavDtKritiPlan}"></td>
+					
+					<td th:text="${HavDtPlatformaPlan}"></td>				
+					<td th:text="${hdPlatforma}"></td>
+					<td th:text="${hdPlatforma - HavDtPlatformaPlan}"></td>
+					
+					<td th:text="${HavDtPoluvagonPlan}"></td>				
+					<td th:text="${hdPoluvagon}"></td>
+					<td th:text="${hdPoluvagon - HavDtPoluvagonPlan}"></td>
+					
+					<td th:text="${HavDtSisternaPlan}"></td>				
+					<td th:text="${hdSisterna}"></td>
+					<td th:text="${hdSisterna - HavDtSisternaPlan}"></td>
+			
+					<td th:text="${HavDtBoshqaPlan}"></td>				
+					<td th:text="${hdBoshqa}"></td>
+					<td th:text="${hdBoshqa - HavDtBoshqaPlan}"></td>
+				
+				</tr>
+				<tr>	
+					<th >VCHD-5</th>	
+				
+					<td th:text="${AndjDtHammaPlan}"></td>				
+					<td th:text="${adHamma}"></td>
+					<td th:text="${adHamma - AndjDtHammaPlan}"></td>
+					
+					<td th:text="${AndjDtKritiPlan}"></td>				
+					<td th:text="${adKriti}"></td>
+					<td th:text="${adKriti - AndjDtKritiPlan}"></td>
+		
+					<td th:text="${AndjDtPlatformaPlan}"></td>				
+					<td th:text="${adPlatforma}"></td>
+					<td th:text="${adPlatforma - AndjDtPlatformaPlan}"></td>
+		
+					<td th:text="${AndjDtPoluvagonPlan}"></td>				
+					<td th:text="${adPoluvagon}"></td>
+					<td th:text="${adPoluvagon - AndjDtPoluvagonPlan}"></td>
+		
+					<td th:text="${AndjDtSisternaPlan}"></td>				
+					<td th:text="${adSisterna}"></td>
+					<td th:text="${adSisterna - AndjDtSisternaPlan}"></td>
+	
+					<td th:text="${AndjDtBoshqaPlan}"></td>				
+					<td th:text="${adBoshqa}"></td>
+					<td th:text="${adBoshqa - AndjDtBoshqaPlan}"></td>
+		
+				</tr>
+				<tr>	
+					<th >VCHD-6</th>	
+				
+					<td th:text="${SamDtHammaPlan}"></td>				
+					<td th:text="${sdHamma}"></td>
+					<td th:text="${sdHamma - SamDtHammaPlan}"></td>
+					
+					<td th:text="${SamDtKritiPlan}"></td>				
+					<td th:text="${sdKriti}"></td>
+					<td th:text="${sdKriti - SamDtKritiPlan}"></td>
+					
+					<td th:text="${SamDtPlatformaPlan}"></td>				
+					<td th:text="${sdPlatforma}"></td>
+					<td th:text="${sdPlatforma - SamDtPlatformaPlan}"></td>
+					
+					<td th:text="${SamDtPoluvagonPlan}"></td>				
+					<td th:text="${sdPoluvagon}"></td>
+					<td th:text="${sdPoluvagon - SamDtPoluvagonPlan}"></td>
+					
+					<td th:text="${SamDtSisternaPlan}"></td>				
+					<td th:text="${sdSisterna}"></td>
+					<td th:text="${sdSisterna - SamDtSisternaPlan}"></td>
+					
+					<td th:text="${SamDtBoshqaPlan}"></td>				
+					<td th:text="${sdBoshqa}"></td>
+					<td th:text="${sdBoshqa - SamDtBoshqaPlan}"></td>	
+				</tr>
+				<tr>	
+					<th >O'zvagonta'mir</th>	
+				
+					<td th:text="${DtHammaPlan}">Plan</td>				
+					<td th:text="${uvtdHamma}"></td>
+					<td th:text="${uvtdHamma - DtHammaPlan}"></td>
+					
+					<td th:text="${DtKritiPlan}">Plan</td>				
+					<td th:text="${uvtdKriti}"></td>
+					<td th:text="${uvtdKriti - DtKritiPlan}"></td>
+					
+					<td th:text="${DtPlatformaPlan}">Plan</td>				
+					<td th:text="${uvtdPlatforma}"></td>
+					<td th:text="${uvtdPlatforma - DtPlatformaPlan}"></td>
+					
+					<td th:text="${DtPoluvagonPlan}">Plan</td>				
+					<td th:text="${uvtdPoluvagon}"></td>
+					<td th:text="${uvtdPoluvagon - DtPoluvagonPlan}"></td>
+					
+					<td th:text="${DtSisternaPlan}">Plan</td>				
+					<td th:text="${uvtdSisterna}"></td>
+					<td th:text="${uvtdSisterna - DtSisternaPlan}"></td>
+					
+					<td th:text="${DtBoshqaPlan}">Plan</td>				
+					<td th:text="${uvtdBoshqa}"></td>
+					<td th:text="${uvtdBoshqa - DtBoshqaPlan}"></td>
+	
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		
+		<div class="container bg-yellow d-flex justify-content-center text-black">
+			<h3>Kapital ta'mir(КР)</h3>
+		</div>
+		<table class=" table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th rowspan="2">VCHD</th>
+					<th colspan="3">Jami</th>
+					<th colspan="3">Yopiq vagon (крыт)</th>
+					<th colspan="3">Platforma(пф)</th>
+					<th colspan="3">Yarim ochiq vagon(пв)</th>
+					<th colspan="3">Sisterna(цс)</th>
+					<th colspan="3">Boshqa turdagi(проч)</th>
+				</tr>
+				<tr>	
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>	
+				</tr>
+			</thead>
+			<hr>
+			<tbody>
+				
+				<tr>	
+					<th >VCHD-3</th>	
+				
+					<td th:text="${HavKtHammaPlan}"></td>				
+					<td th:text="${hkHamma}"></td>
+					<td th:text="${hkHamma - HavKtHammaPlan}"></td>
+					
+					<td th:text="${HavKtKritiPlan}"></td>				
+					<td th:text="${hkKriti}"></td>
+					<td th:text="${hkKriti - HavKtKritiPlan}"></td>
+					
+					<td th:text="${HavKtPlatformaPlan}"></td>				
+					<td th:text="${hkPlatforma}"></td>
+					<td th:text="${hkPlatforma - HavKtPlatformaPlan}"></td>
+					
+					<td th:text="${HavKtPoluvagonPlan}"></td>				
+					<td th:text="${hkPoluvagon}"></td>
+					<td th:text="${hkPoluvagon - HavKtPoluvagonPlan}"></td>
+					
+					<td th:text="${HavKtSisternaPlan}"></td>				
+					<td th:text="${hkSisterna}"></td>
+					<td th:text="${hkSisterna - HavKtSisternaPlan}"></td>
+					
+					<td th:text="${HavKtBoshqaPlan}"></td>				
+					<td th:text="${hkBoshqa}"></td>
+					<td th:text="${hkBoshqa  -  HavKtBoshqaPlan}"></td>
+					
+				</tr>
+				<tr>	
+					<th >VCHD-5</th>	
+				
+					<td th:text="${AndjKtHammaPlan}"></td>				
+					<td th:text="${akHamma}"></td>
+					<td th:text="${akHamma - AndjKtHammaPlan}"></td>
+					
+					<td th:text="${AndjKtKritiPlan}"></td>				
+					<td th:text="${akKriti}"></td>
+					<td th:text="${akKriti - AndjKtKritiPlan}"></td>
+					
+					<td th:text="${AndjKtPlatformaPlan}"></td>				
+					<td th:text="${akPlatforma}"></td>
+					<td th:text="${akPlatforma - AndjKtPlatformaPlan}"></td>
+					
+					<td th:text="${AndjKtPoluvagonPlan}"></td>				
+					<td th:text="${akPoluvagon}"></td>
+					<td th:text="${akPoluvagon - AndjKtPoluvagonPlan}"></td>
+					
+					<td th:text="${AndjKtSisternaPlan}"></td>				
+					<td th:text="${akSisterna}"></td>
+					<td th:text="${akSisterna - AndjKtSisternaPlan}"></td>
+					
+					
+					<td th:text="${AndjKtBoshqaPlan}"></td>				
+					<td th:text="${akBoshqa}"></td>
+					<td th:text="${akBoshqa - AndjKtBoshqaPlan}"></td>
+						
+				</tr>
+				<tr>	
+					<th >VCHD-6</th>	
+				
+					<td th:text="${SamKtHammaPlan}"></td>				
+					<td th:text="${skHamma}"></td>
+					<td th:text="${skHamma - SamKtHammaPlan}"></td>
+	
+					
+					<td th:text="${SamKtKritiPlan}"></td>				
+					<td th:text="${skKriti}"></td>
+					<td th:text="${skKriti - SamKtKritiPlan}"></td>
+	
+					<td th:text="${SamKtPlatformaPlan}"></td>				
+					<td th:text="${skPlatforma}"></td>
+					<td th:text="${skPlatforma - SamKtPlatformaPlan}"></td>
+	
+					<td th:text="${SamKtPoluvagonPlan}"></td>				
+					<td th:text="${skPoluvagon}"></td>
+					<td th:text="${skPoluvagon - SamKtPoluvagonPlan}"></td>
+	
+					<td th:text="${SamKtSisternaPlan}"></td>				
+					<td th:text="${skSisterna}"></td>
+					<td th:text="${skSisterna - SamKtSisternaPlan}"></td>
+	
+					<td th:text="${SamKtBoshqaPlan}"></td>				
+					<td th:text="${skBoshqa}"></td>
+					<td th:text="${skBoshqa - SamKtBoshqaPlan}"></td>
+	
+				</tr>
+				<tr>	
+					<th >O'zvagonta'mir</th>	
+				
+					<td th:text="${KtHammaPlan}"></td>				
+					<td th:text="${uvtkhamma}"></td>
+					<td th:text="${uvtkhamma - KtHammaPlan}"></td>
+					
+					<td th:text="${KtKritiPlan}">Plan</td>				
+					<td th:text="${uvtkKriti}"></td>
+					<td th:text="${uvtkKriti -KtKritiPlan}"></td>
+					
+					<td th:text="${KtPlatformaPlan}">Plan</td>				
+					<td th:text="${uvtkPlatforma}"></td>
+					<td th:text="${uvtkPlatforma - KtPlatformaPlan}"></td>
+					
+					<td th:text="${KtPoluvagonPlan}">Plan</td>				
+					<td th:text="${uvtkPoluvagon}"></td>
+					<td th:text="${uvtkPoluvagon - KtPoluvagonPlan}"></td>
+					
+					<td th:text="${KtSisternaPlan}">Plan</td>				
+					<td th:text="${uvtkSisterna}"></td>
+					<td th:text="${uvtkSisterna - KtSisternaPlan}"></td>
+					
+					<td th:text="${KtBoshqaPlan}">Plan</td>				
+					<td th:text="${uvtkBoshqa}"></td>
+					<td th:text="${uvtkBoshqa - KtBoshqaPlan}"></td>
+					
+				</tr>
+			</tbody>
+		</table>
+		
+		<hr>
+		
+		<div class="container bg-yellow d-flex justify-content-center text-black">
+			<h3>KRP(КРП)</h3>
+		</div>
+		<table class=" table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th rowspan="2">VCHD</th>
+					<th colspan="3">Jami</th>
+					<th colspan="3">Yopiq vagon (крыт)</th>
+					<th colspan="3">Platforma(пф)</th>
+					<th colspan="3">Yarim ochiq vagon(пв)</th>
+					<th colspan="3">Sisterna(цс)</th>
+					<th colspan="3">Boshqa turdagi(проч)</th>
+				</tr>
+				<tr>	
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>
+					
+					<td >Plan</td>				
+					<td >Fakt</td>
+					<td >+ / -</td>	
+				</tr>
+			</thead>
+			<hr>
+			<tbody>
+				
+				<tr>	
+					<th >VCHD-3</th>	
+				
+					<td th:text="${HavKrpHammaPlan}"></td>				
+					<td th:text="${hkrHamma}"></td>
+					<td th:text="${hkrHamma - HavKrpHammaPlan}"></td>
+					
+					<td th:text="${HavKrpKritiPlan}"></td>				
+					<td th:text="${hkrKriti}"></td>
+					<td th:text="${hkrKriti - HavKrpKritiPlan}"></td>
+					
+					<td th:text="${HavKrpPlatformaPlan}"></td>				
+					<td th:text="${hkrPlatforma}"></td>
+					<td th:text="${hkrPlatforma - HavKrpPlatformaPlan}"></td>
+					
+					<td th:text="${HavKrpPoluvagonPlan}"></td>				
+					<td th:text="${hkrPoluvagon}"></td>
+					<td th:text="${hkrPoluvagon - HavKrpPoluvagonPlan}"></td>
+					
+					<td th:text="${HavKrpSisternaPlan}"></td>				
+					<td th:text="${hkrSisterna}"></td>
+					<td th:text="${hkrSisterna - HavKrpSisternaPlan}"></td>
+					
+					<td th:text="${HavKrpBoshqaPlan}"></td>				
+					<td th:text="${hkrBoshqa}"></td>
+					<td th:text="${hkrBoshqa - HavKrpBoshqaPlan}"></td>
+				</tr>
+				<tr>	
+					<th >VCHD-5</th>	
+				
+					<td th:text="${AndjKrpHammaPlan}"></td>				
+					<td th:text="${akrHamma}"></td>
+					<td th:text="${akrHamma - AndjKrpHammaPlan}"></td>
+					
+					<td th:text="${AndjKrpKritiPlan}"></td>				
+					<td th:text="${akrKriti}"></td>
+					<td th:text="${akrKriti - AndjKrpKritiPlan}"></td>
+					
+					<td th:text="${AndjKrpPlatformaPlan}"></td>				
+					<td th:text="${akrPlatforma}"></td>
+					<td th:text="${akrPlatforma - AndjKrpPlatformaPlan}"></td>
+					
+					<td th:text="${AndjKrpPoluvagonPlan}"></td>				
+					<td th:text="${akrPoluvagon}"></td>
+					<td th:text="${akrPoluvagon - AndjKrpPoluvagonPlan}"></td>
+					
+					<td th:text="${AndjKrpSisternaPlan}"></td>				
+					<td th:text="${akrSisterna}"></td>
+					<td th:text="${akrSisterna - AndjKrpSisternaPlan}"></td>
+					
+					<td th:text="${AndjKrpBoshqaPlan}"></td>				
+					<td th:text="${akrBoshqa}"></td>
+					<td th:text="${akrBoshqa - AndjKrpBoshqaPlan}"></td>
+				</tr>
+				<tr>	
+					<th >VCHD-6</th>	
+				
+					<td th:text="${SamKrpHammaPlan}"></td>				
+					<td th:text="${skrHamma}"></td>
+					<td th:text="${skrHamma - SamKrpHammaPlan}"></td>
+					
+					<td th:text="${SamKrpKritiPlan}"></td>				
+					<td th:text="${skrKriti}"></td>
+					<td th:text="${skrKriti - SamKrpKritiPlan}"></td>
+					
+					<td th:text="${SamKrpPlatformaPlan}"></td>				
+					<td th:text="${skrPlatforma}"></td>
+					<td th:text="${skrPlatforma - SamKrpPlatformaPlan}"></td>
+					
+					<td th:text="${SamKrpPoluvagonPlan}"></td>				
+					<td th:text="${skrPoluvagon}"></td>
+					<td th:text="${skrPoluvagon - SamKrpPoluvagonPlan}"></td>
+					
+					<td th:text="${SamKrpSisternaPlan}"></td>				
+					<td th:text="${skrSisterna}"></td>
+					<td th:text="${skrSisterna - SamKrpSisternaPlan}"></td>
+					
+					<td th:text="${SamKrpBoshqaPlan}"></td>				
+					<td th:text="${skrBoshqa}"></td>
+					<td th:text="${skrBoshqa - SamKrpBoshqaPlan}"></td>	
+				</tr>
+				<tr>	
+					<th >O'zvagonta'mir</th>	
+				
+					<td th:text="${KrpHammaPlan}">Plan</td>				
+					<td th:text="${uvtkrhamma}"></td>
+					<td th:text="${uvtkrhamma - KrpHammaPlan}"></td>
+					
+					<td th:text="${KrpKritiPlan}">Plan</td>				
+					<td th:text="${uvtkrKriti}"></td>
+					<td th:text="${uvtkrKriti - KrpKritiPlan}"></td>
+					
+					<td th:text="${KrpPlatformaPlan}">Plan</td>				
+					<td th:text="${uvtkrPlatforma}"></td>
+					<td th:text="${uvtkrPlatforma - KrpPlatformaPlan}"></td>
+					
+					<td th:text="${KrpPoluvagonPlan}">Plan</td>				
+					<td th:text="${uvtkrPoluvagon}"></td>
+					<td th:text="${uvtkrPoluvagon - KrpPoluvagonPlan}"></td>
+					
+					<td th:text="${KrpSisternaPlan}">Plan</td>				
+					<td th:text="${uvtkrSisterna}"></td>
+					<td th:text="${uvtkrSisterna - KrpSisternaPlan}"></td>
+					
+					<td th:text="${KrpBoshqaPlan}">Plan</td>				
+					<td th:text="${uvtkrBoshqa}"></td>
+					<td th:text="${uvtkrBoshqa - KrpBoshqaPlan}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<div class="container bg-yellow d-flex justify-content-center text-black">
+			<h5>Yo'lovchi vagonlar</h5>
+		</div>
+		<table  class=" table table-striped table-bordered">
+			<thead>
+			<tr>
+				<th >VCHD-5</th>
+				<th >Plan</th>
+				<th >Fakt</th>
+				<th >+ / -</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<th >TO-3</th>
+				<td th:text="${AndjToYolovchiPlan}"></td>
+				<td th:text="${atYolovchi}"></td>
+				<td th:text="${AndjToYolovchiPlan - atYolovchi}"></td>
+			</tr>
+			<tr>
+				<th >Depo ta'mir(ДР)</th>
+				<td th:text="${AndjDtYolovchiPlan}"></td>
+				<td th:text="${adYolovchi}"></td>
+				<td th:text="${AndjDtYolovchiPlan - adYolovchi}"></td>
+			</tr>
+			</tbody>
+		</table>
+		<hr>
+		<table class="text-justify table table-striped table-bordered">
+			<thead class="text-justify">
+				<tr>
+					<th>VCHD</th>
+					<th>VCHD-3</th>
+					<th>VCHD-5</th>
+					<th>VCHD-6</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th >Oxirgi o'zgarish vaqti</th>
+					<td th:text="${havDate}"></td>
+					<td th:text="${andjDate}"></td>
+					<td th:text="${samDate}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<table class=" table table-striped table-bordered">
+			<thead class="table-dark">
+				<tr>
+					<th>№</th>
+					<th>Nomeri</th>
+					<th>Vagon turi</th>
+					<th>VCHD</th>
+					<th>Ta'mir turi</th>
+					<th>Ishlab chiqarilgan yili</th>
+					<th>Ta'mirdan chiqgan vaqti</th>
+					<th>Saqlangan vaqti</th>
+					<th>Egasi</th>
+					<th>Izoh</th>
+					<th>
+						<ul class="nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle  btn btn-success" style="text-decoration: none; " data-toggle="dropdown">Yuklab olish<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<a th:href="@{/vagons/createExcelTableBiznes}" class="btn custom-btn btn-16" >Jadval</a>
+									<div class="dropdown-divider"></div>
+									<a th:href="@{/vagons/createExcelBiznes}" class="btn custom-btn btn-16">Ro'yxat</a>
+								</ul>
+							</li>
+						</ul>
+					</th>
+				</tr>
+			</thead>
+			<hr>
+			<tbody>
+				<tr th:each="vagon, iStat:${vagons}">
+					<td th:text="${iStat.count}"></td>
+					<td th:text="${vagon.nomer}"></td>
+					<td th:text="${vagon.vagonTuri}"></td>
+					<td th:text="${vagon.depoNomi}"></td>
+					<td th:text="${vagon.remontTuri}"></td>
+					<td th:text="${vagon.ishlabChiqarilganYili}"></td>
+					<td th:text="${vagon.chiqganVaqti}"></td>
+					<td th:text="${vagon.createdDate}"></td>
+					<td th:text="${vagon.country}"></td>
+					<td th:text="${vagon.izoh}"></td>
+					<td>
+						<a th:href="@{/vagons/editTayyor/{id}(id=${vagon.id})}" class=" btn btn-warning btn-sm ">Tahrirlash</a>
+						<a th:href="@{/vagons/deleteTayyor/{id}(id=${vagon.id})}" class=" btn btn-danger btn-sm ">O'chirish</a>
+					
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>

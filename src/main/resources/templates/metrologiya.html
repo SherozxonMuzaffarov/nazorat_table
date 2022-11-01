@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>O'zvagonta'mir</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+        .table th {
+            text-align: center;
+            font-size: 14px;
+            padding-top: 5px;
+            background: silver;
+
+        }
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+        .table-fixed thead {
+            position: sticky;
+            position: -webkit-sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        /*This will work on every browser*/
+        .table-fixed thead th {
+            position: sticky;
+            position: -webkit-sticky;
+            top: 0;
+            z-index: 999;
+        }
+    </style>
+</head>
+
+<body >
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/" style="margin-left:20px;">Asosiy</a>
+                <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="/vagons">Qoldiq vagonlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="/vagons/chiqishMalumot">187 telegramma bo'yicha ma'lumot</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" style="text-decoration: none; color: black" data-toggle="dropdown">Ta'mir bo'yicha ma'lumot <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item"  href="/vagons/tablesUty">O'TY rejasi bo'yicha</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item"  href="/vagons/tables">Bisnes reja bo'yicha</a>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" style="text-decoration: none; color: black; margin-left: 20px" data-toggle="dropdown">Metrologiya <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item"  href="/metrologiya">Sexdagi shablonlar</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item "  href="/metrologiyaSklad">Skladdagi shablonlar</a>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="row justify-content-end">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a th:href="@{/metrologiya/newTemplate}" class="nav-link" ><p class="lead">Shablon qo'shish</p></a>
+                </li>
+            </ul>
+
+            <form th:style="(!${isAdmin}) ? 'display:none':''" th:action="@{/metrologiya/filterTemplate}" method="get">
+                <div class="form-group">
+                    <select class="form-control" th:name="depoNomi"  >
+                        <option th:value="'Hammasi'">O'zvagonta'mir</option>
+                        <option th:value="'VCHD-3'">VCHD-3</option>
+                        <option th:value="'VCHD-5'">VCHD-5</option>
+                        <option th:value="'VCHD-6'">VCHD-6</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">filter</button>
+            </form>
+
+        </div>
+        <hr>
+    </div>
+    <div class="mx-5">
+        <div class="container bg-yellow d-flex justify-content-center text-black">
+            <h1 >Ta'mirlash sexlaridagi mavjud shablonlar</h1>
+        </div>
+        <hr>
+        <table style="height: 100px;" class="table table-fixed table-striped table-bordered">
+            <thead >
+            <tr>
+                <th rowspan="3">№</th>
+                <th rowspan="3">O'V va SU nomlari</th>
+                <th rowspan="3">Soni</th>
+                <th rowspan="3">Ishlab chiqarilgan yili</th>
+                <th rowspan="3">Zavodda ishlab chiqarilgan raqami</th>
+                <th rowspan="3">Turi</th>
+                <th rowspan="3">Bajaradigan ishi</th>
+                <th rowspan="3">O'V/SU ning saqlanish joyi</th>
+                <th colspan="4">Qiyoslash / kalibrlash yili</th>
+                <th rowspan="3">Qiyoslash va kalibrlashning davriyligi</th>
+                <th rowspan="3">Tuzilgan shartnomaning raqami va sanasi</th>
+                <th rowspan="3">VCHD</th>
+                <th rowspan="3">Izoh</th>
+                <th rowspan="3">
+                    <a th:href="@{/metrologiya/createExcel}" class=" btn btn-success btn-sm ">Yuklab olish</a>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="3">Nazoratdan o'tgan asboblar</th>
+                <th colspan="1">Reja asosida</th>
+            </tr>
+            <tr>
+                <th>Sertifikatsiyalash, qiyoslash, kalibrlash raqami va sanasi</th>
+                <th>Sertifikat kim tomonidan berilgan</th>
+                <th>Sarflangan mablag'</th>
+                <th>Keyingi qiyoslash va kalibrlash sanasi</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="template, iStat:${templates}">
+                    <td th:text="${iStat.count}"></td>
+                    <td th:text="${template.nomi}"></td>
+                    <td th:text="${template.soni}"></td>
+                    <td th:text="${template.ishlabChiqarilganYili}"></td>
+                    <td th:text="${template.raqami}"></td>
+                    <td th:text="${template.turi}"></td>
+                    <td th:text="${template.ishi}"></td>
+                    <td th:text="${template.saqlanishJoyi}"></td>
+                    <td th:text="${template.serRaqamiSanasi}"></td>
+                    <td th:text="${template.serBerganKorxona}"></td>
+                    <td th:text="${template.sarflanganMablag}"></td>
+                    <td th:style="${(template.getSerKeyingiSanasi().getTime() - currentDate.getTime())/(1000 * 60 * 60 * 24)} < 20 ? 'background-color: rosybrown':''"  th:text="${template.serKeyingiSanasi}"></td>
+                    <td th:text="${template.serDavriyligi}"></td>
+                    <td th:text="${template.shartnomaRaqamiSanasi}"></td>
+                    <td th:text="${template.depoNomi}"></td>
+                    <td th:text="${template.izoh}"></td>
+                    <td>
+                        <a th:href="@{/metrologiya/editTemplate/{id}(id=${template.id})}" class=" btn btn-warning btn-sm ">Tahrirlash</a>
+                        <a th:href="@{/metrologiya/deleteTemplate/{id}(id=${template.id})}" class=" btn btn-danger btn-sm ">O'chirish</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

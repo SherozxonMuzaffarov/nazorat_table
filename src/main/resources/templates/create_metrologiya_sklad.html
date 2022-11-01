@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>O'zvagonta'mir</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm col-md col-lg container justify-content-center card">
+            <hr>
+            <div class="container bg-yellow d-flex justify-content-center text-black">
+                <h1 >Shablon qo'shish</h1>
+            </div>
+            <hr>
+            <form th:action="@{/metrologiyaSklad/template}" th:object="${skladModel}" method="POST">
+                <div class="row">
+                    <div class="form-group col">
+                        <label>Nomi</label>
+                        <input type="text" th:field="*{nomi}" class="form-control"
+                               placeholder="O'V va SU nomlarini kiriting" />
+                    </div>
+                    <div class="form-group col">
+                        <label>Soni</label>
+                        <input type="number" min="1"  value="0"   th:field="*{soni}" class="form-control"
+                               placeholder="sonini kiriting" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label>Ishlab chiqarilgan yili</label>
+                        <input type="number" min="1950" max="2099" value="2022" th:field="*{ishlabChiqarilganYili}" class="form-control"
+                               placeholder="ishlab chiqarilgan yili kiriting" />
+                    </div>
+                    <div class="form-group col">
+                        <label>Zavodda ishlab chiqarilgan raqami</label>
+                        <input type="text" th:field="*{raqami}" class="form-control"
+                               placeholder="zavodda ishlab chiqarilgan raqami kiriting" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label>Turi</label>
+                        <input type="text" th:field="*{turi}" class="form-control"
+                               placeholder="turini kiriting" />
+                    </div>
+                    <div class="form-group col">
+                        <label>Bajaradigan ishi</label>
+                        <input type="text" th:field="*{ishi}" class="form-control"
+                               placeholder="bajaradigan ishini kiriting" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="sel1">Depo nomi</label>
+                        <select class="form-control" th:field="*{depoNomi}" id="sel1">
+                            <option th:value="'VCHD-3'">VCHD-3</option>
+                            <option th:value="'VCHD-5'">VCHD-5</option>
+                            <option th:value="'VCHD-6'">VCHD-6</option>
+                        </select>
+                    </div>
+                    <div class="form-group col">
+                        <label>Izoh</label>
+                        <input type="text" th:field="*{izoh}" class="form-control"
+                               placeholder="izoh kiritishingiz mumkin" />
+                    </div>
+                </div>
+                <div class="box-footer justify-content-center row">
+                    <button class="btn btn-primary btn-block col" type="submit">Saqlash</button>
+                    <a th:href="@{/metrologiyaSklad}" class=" btn btn-danger col " >Ortga</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+
+</html>

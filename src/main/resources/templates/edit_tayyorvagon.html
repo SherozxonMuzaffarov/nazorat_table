@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<title>O'zvagonta'mir</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm col-md col-lg container justify-content-center card">
+				<hr>
+				<div class="container bg-yellow d-flex justify-content-center text-black">
+					<h1 >Tahrirlash</h1>
+				</div>
+				<hr>
+				<form th:action="@{/vagons/updateTayyor/{id} (id=${vagon.id})}" th:object="${vagon}" method="POST">
+					<div class="row">
+						<div class="form-group col">
+							<label>Nomeri</label>
+							<input name="nomer" type="number" min="1" th:field="*{nomer}" class="form-control"
+								placeholder="vagon nomerini kiriting" />
+						</div>
+						<div class="form-group col">
+						  <label for="turi">Remont turi</label>
+						  <select class="form-control" th:field="*{remontTuri}" id="turi">
+						     <option th:value="'Depoli ta’mir(ДР)'">Depoli ta’mir (ДР)</option>
+						    <option th:value="'Kapital ta’mir(КР)'">Kapital ta’mir (КР)</option>
+						    <option th:value="'KRP(КРП)'">KRP (КРП)</option>
+						    <option th:value="'TO-3'">TO-3</option>
+						  </select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col">
+							<label>Ishlab chiqarilgan yili</label>
+							<input name="yili" type="number" min="1950" max="2099" step="1" value="2022" th:field="*{ishlabChiqarilganYili}" class="form-control"
+								placeholder="ishlab chiqarilgan yilini kiriting" />
+						</div>									
+						<div class="form-group col">
+						  <label for="sel1">Depo nomi</label>
+						  <select class="form-control" th:field="*{depoNomi}" id="sel1">
+						    <option th:value="'VCHD-3'">VCHD-3</option>
+						    <option th:value="'VCHD-5'">VCHD-5</option>
+							<option th:value="'VCHD-6'">VCHD-6</option>
+						  </select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col">
+							<label>Ta'mirdan chiqgan vaqti</label>
+							<input name="chiqishi" type="date" th:field="*{chiqganVaqti}" class="form-control"/>
+						</div>					
+						<div class="form-group col">
+						  <label for="vagonTur">Vagon turi</label>
+						  <select class="form-control" th:field="*{vagonTuri}" id="vagonTur">
+						     <option th:value="'Yopiq vagon (крыт)'">Yopiq vagon (крыт)</option>
+						     <option th:value="'Platforma(пф)'">Platforma(пф)</option>
+						     <option th:value="'Yarim ochiq vagon(пв)'">Yarim ochiq vagon(пв)</option>
+						     <option th:value="'Sisterna(цс)'">Sisterna(цс)</option>
+						     <option th:value="'Boshqa turdagi(проч)'">Boshqa turdagi(проч)</option>
+							  <option th:value="'Yo\'lovchi vagon(пассжир)'">Yo'lovchi vagon(пассжир)</option>
+						  </select>
+						</div>				
+					</div>	
+					<div class="row">
+						<div class="form-group col">
+							<label>Izoh</label>
+							<input name="izoh" type="String" th:field="*{izoh}" class="form-control"
+								   placeholder="izoh kiritishingiz mumkin" />
+						</div>
+						<div class="form-group col">
+							 <label for="country">Country</label>
+							  <select class="form-control" th:field="*{country}" id="country">
+							    <option th:value="'O\'TY(ГАЖК)'">O'TY(ГАЖК)</option>
+							    <option th:value="'MDH(СНГ)'">MDH(СНГ)</option>
+							    <option th:value="'Sanoat(ПРОМ)'">Sanoat(ПРОМ)</option>
+							  </select>
+						</div>	
+
+					</div>
+					<div class="box-footer justify-content-center row">
+						<button class="btn btn-primary btn-block col" type="submit">Saqlash</button>
+						<a th:href="@{/vagons/AllPlanTable}" class=" btn btn-danger col " >Ortga</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+
+</html>
